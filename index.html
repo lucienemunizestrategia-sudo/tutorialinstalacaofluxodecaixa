@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tutorial - Sistema de Fluxo de Caixa Prospera</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --azul-principal:#092040;
+      --azul-secundaria:#00B7D7;
+      --amarelo-acento:#ECC203;
+      --cinza-neutro:#EFF1F3;
+      --azul-escuro:#021738;
+      --branco:#FFFFFF;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Open Sans',sans-serif;
+      font-size:20px;line-height:1.6;
+      color:var(--azul-escuro);
+      background:linear-gradient(135deg,var(--cinza-neutro) 0%,var(--branco) 100%);
+      min-height:100vh;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    .header{
+      background:linear-gradient(135deg,var(--azul-principal) 0%,var(--azul-escuro) 100%);
+      color:var(--branco);text-align:center;
+      padding:40px 20px;border-radius:20px 20px 0 0;margin-bottom:0;
+    }
+    .logo-container{display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:30px}
+    .logo-prospera{max-width:400px;width:100%;height:auto;filter:brightness(1.1)}
+    .location-text{
+      margin-top:8px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--amarelo-acento);text-align:center
+    }
+    h1{font-family:'Montserrat',sans-serif;font-weight:700;font-size:44px;margin-bottom:15px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+    .subtitle{font-family:'Montserrat',sans-serif;font-weight:400;font-size:28px;opacity:.9}
+    .content{background:var(--branco);padding:40px;border-radius:0 0 20px 20px;box-shadow:0 10px 30px rgba(9,32,64,.1)}
+    h2{
+      font-family:'Montserrat',sans-serif;font-weight:700;font-size:32px;color:var(--branco);
+      background:var(--azul-principal);padding:20px 30px;border-radius:15px;margin:40px 0 20px;box-shadow:0 5px 15px rgba(9,32,64,.2)
+    }
+    h3{
+      font-family:'Montserrat',sans-serif;font-weight:600;font-size:28px;color:var(--azul-secundaria);
+      margin:30px 0 15px;border-left:5px solid var(--azul-secundaria);padding-left:20px
+    }
+    h4{font-weight:700;font-size:22px;color:var(--azul-escuro);margin:25px 0 10px}
+    p{margin-bottom:15px;text-align:justify}
+    ul,ol{margin:20px 0;padding-left:30px}
+    li{margin-bottom:10px;line-height:1.7}
+    .overview-box{
+      background:linear-gradient(135deg,var(--azul-secundaria) 0%,var(--amarelo-acento) 100%);
+      color:var(--branco);padding:30px;border-radius:15px;margin:30px 0;box-shadow:0 8px 25px rgba(0,183,215,.3)
+    }
+    .overview-box h3{color:var(--branco);border:none;padding:0;margin-top:0}
+    .warning-box{
+      background:var(--amarelo-acento);color:var(--azul-escuro);padding:20px;border-radius:10px;border-left:5px solid var(--azul-principal);
+      margin:20px 0;font-weight:600
+    }
+    .warning-box strong{color:var(--azul-principal);font-size:22px}
+    .code-block{
+      background:var(--cinza-neutro);border:2px solid var(--azul-secundaria);border-radius:10px;padding:20px;margin:20px 0;
+      font-family:'Courier New',monospace;font-size:16px;overflow-x:auto;position:relative
+    }
+    .code-block::before{
+      content:'CÓDIGO';position:absolute;top:-12px;left:20px;background:var(--azul-secundaria);color:var(--branco);
+      padding:5px 15px;border-radius:5px;font-size:12px;font-weight:bold;font-family:'Open Sans',sans-serif
+    }
+    .copy-btn{
+      background:var(--azul-secundaria);color:var(--branco);border:0;border-radius:8px;padding:8px 14px;font-weight:700;
+      cursor:pointer;margin-top:8px
+    }
+    .button-style{
+      background:linear-gradient(135deg,var(--amarelo-acento) 0%,#f4d03f 100%);color:var(--azul-escuro);
+      padding:12px 25px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin:10px 5px;
+      box-shadow:0 5px 15px rgba(236,194,3,.3);transition:transform .2s ease
+    }
+    .button-style:hover{transform:translateY(-2px)}
+    .url-placeholder{
+      background:var(--azul-secundaria);color:var(--branco);padding:5px 15px;border-radius:20px;font-weight:bold;font-size:18px;display:inline-block
+    }
+    .navigation{
+      position:fixed;top:50%;right:20px;transform:translateY(-50%);background:var(--branco);
+      border-radius:15px;padding:15px 10px;box-shadow:0 5px 20px rgba(9,32,64,.2);z-index:1000
+    }
+    .nav-item{display:block;padding:8px 15px;color:var(--azul-principal);text-decoration:none;font-size:14px;font-weight:600;border-radius:8px;margin:5px 0;transition:all .2s ease}
+    .nav-item:hover{background:var(--azul-secundaria);color:var(--branco)}
+    .tabs{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+    .tab{
+      border:2px solid var(--azul-principal);color:var(--azul-principal);background:var(--branco);
+      padding:10px 16px;border-radius:12px;font-weight:700;text-decoration:none
+    }
+    .tab.active{background:var(--azul-principal);color:var(--branco)}
+    .badge-opcional{
+      display:inline-block;margin-left:10px;background:var(--cinza-neutro);color:var(--azul-escuro);
+      border:1px dashed var(--azul-secundaria);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:700
+    }
+    @media (max-width:768px){
+      .navigation{display:none}
+      h1{font-size:36px}
+      h2{font-size:28px;padding:15px 20px}
+      h3{font-size:24px}
+      .subtitle{font-size:24px}
+      body{font-size:18px}
+      .content{padding:20px}
+      .logo-prospera{max-width:280px}
+      .code-block{font-size:14px}
+    }
+/* Rodapé Prospera */
+.footer {
+  background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-principal) 100%);
+  color: var(--branco);
+  margin-top: 32px;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: grid;
+  grid-template-columns: 1.2fr .8fr .8fr;
+  gap: 24px;
+}
+.footer h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  color: var(--branco);
+  margin: 0 0 10px;
+}
+.footer p, .footer li, .footer a {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+.footer a {
+  color: var(--azul-secundaria);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer a:hover { text-decoration: underline; }
+.footer ul { list-style: none; padding: 0; margin: 0; }
+.footer li { margin: 6px 0; }
+.footer-meta {
+  border-top: 1px solid rgba(255,255,255,.15);
+  padding-top: 12px;
+  font-size: 14px;
+  opacity: .9;
+}
+@media (max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 12px; }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Navegação lateral -->
+  <div class="navigation">
+    <a href="#guia-uso" class="nav-item">Guia de Uso</a>
+    <a href="#guia-tecnico" class="nav-item">Guia Técnico</a>
+    <a href="#downloads" class="nav-item">Downloads</a>
+    <a href="#apendice-cores" class="nav-item">Apêndice (Cores)</a>
+    <a href="#checklist" class="nav-item">Checklist</a>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <!-- LOGO VISÍVEL (o atendente não precisa mexer) -->
+        <img id="logoTopo" class="logo-prospera"
+             src="https://lh3.googleusercontent.com/d/1x5sNkC9vd7CI78y0xdkWvgoadxPEMcIf=w800"
+             alt="Prospera Rio — Logomarca">
+        <div class="location-text">MARÉ · JACAREZINHO</div>
+      </div>
+      <h1>Tutorial de Instalação</h1>
+      <div class="subtitle">Sistema de Fluxo de Caixa Prospera</div>
+    </div>
+
+    <div class="content">
+      <!-- Visão Geral -->
+      <div class="overview-box">
+        <h3>Visão Geral do Sistema</h3>
+        <p>O Sistema de Fluxo de Caixa Prospera é uma solução web (Google Apps Script) que:</p>
+        <ul>
+          <li>Cria automaticamente planilhas mensais no Google Drive</li>
+          <li>Oferece interface web responsiva para lançamentos</li>
+          <li>Sincroniza dados entre dispositivos</li>
+          <li>Aplica identidade visual Prospera</li>
+          <li>Organiza movimentações por mês automaticamente</li>
+        </ul>
+      </div>
+
+      <!-- Abas de contexto -->
+      <div class="tabs">
+        <a href="#guia-uso" class="tab active" onclick="setActiveTab(this)">Guia de Uso (Ponta)</a>
+        <a href="#guia-tecnico" class="tab" onclick="setActiveTab(this)">Guia Técnico (Implementação)</a>
+      </div>
+
+      <!-- GUIA DE USO (PONTA) -->
+      <h2 id="guia-uso">GUIA DE USO — PONTA</h2>
+
+      <h3>1. Acesso</h3>
+      <p>Acesse o sistema pelo link informado pela equipe:</p>
+      <p><span class="url-placeholder">[URL_DA_APLICAÇÃO]</span></p>
+
+      <h3>2. Primeiro acesso</h3>
+      <ol>
+        <li>Abra o link.</li>
+        <li>Digite o nome do seu negócio.</li>
+        <li>Clique em “Criar Planilha no Google Drive”.</li>
+        <li>Autorize o acesso ao Google Drive, quando solicitado.</li>
+      </ol>
+
+      <h3>3. Como lançar</h3>
+      <ul>
+        <li>Use “Adicionar Receita” para vendas/entradas.</li>
+        <li>Use “Adicionar Despesa” para gastos.</li>
+        <li>O sistema calcula o saldo automaticamente.</li>
+        <li>Para ver tudo em detalhes, clique em “Abrir Planilha no Google Drive”.</li>
+      </ul>
+
+      <h3>4. Dúvidas rápidas</h3>
+      <ul>
+        <li><strong>Não abriu?</strong> Verifique a conexão e tente novamente.</li>
+        <li><strong>Sem acesso?</strong> Faça login na sua conta Google.</li>
+        <li><strong>Planilha não aparece?</strong> Recarregue e confirme no Google Drive.</li>
+      </ul>
+
+      <!-- GUIA TÉCNICO -->
+      <h2 id="guia-tecnico">GUIA TÉCNICO — IMPLEMENTAÇÃO</h2>
+
+      <h3>1. Acessar o Google Apps Script</h3>
+      <ol>
+        <li>Acesse: <a class="button-style" target="_blank" rel="noopener noreferrer" href="https://script.google.com">https://script.google.com</a></li>
+        <li>Faça login com a conta proprietária do sistema.</li>
+        <li>Clique em <span class="url-placeholder">+ Novo projeto</span>.</li>
+      </ol>
+
+      <h3>2. Criar arquivos do projeto</h3>
+
+<ol>
+  <li>
+    <strong>Code.gs (arquivo inicial)</strong><br>
+    <ul>
+      <li><strong>Se já existir</strong> <code>Código.gs</code> ou <code>Code.gs</code>: abra o arquivo, pressione <strong>Ctrl+A/Cmd+A</strong> e <strong>Delete</strong> para <strong>apagar o conteúdo padrão</strong> (ex.: <code>function myFunction() {}</code>). Depois <strong>cole</strong> o código baixado em “Downloads” e <strong>salve</strong>.</li>
+      <li><strong>Se o nome estiver</strong> <code>Código.gs</code>, você pode <strong>renomear para</strong> <code>Code.gs</code> (opcional, apenas para padronizar).</li>
+      <li><strong>Se não existir</strong>: clique no botão <strong>“+”</strong> ao lado de <strong>Arquivos</strong> → <strong>Arquivo de script</strong> → digite apenas <code>Code</code> (sem extensão). O Apps Script criará <code>Code.gs</code>. Abra, apague o conteúdo e cole o nosso código. Salve.</li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>index.html (interface)</strong><br>
+    <ul>
+      <li><strong>Se já existir</strong> <code>index.html</code>: abra, pressione <strong>Ctrl+A/Cmd+A</strong> e <strong>Delete</strong> para <strong>apagar o conteúdo padrão</strong>. Depois <strong>cole</strong> o código baixado em “Downloads” e <strong>salve</strong>.</li>
+      <li><strong>Se não existir</strong>: clique no <strong>“+”</strong> → <strong>HTML</strong> → digite apenas <code>index</code> (sem extensão). O Apps Script criará <code>index.html</code>. Cole o nosso código e salve.</li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Como abrir os arquivos baixados</strong><br>
+    Abra <code>Code.gs</code> e <code>index.html</code> em um editor simples de texto
+    (Windows: <strong>Bloco de Notas</strong>; macOS: <strong>TextEdit</strong> em <em>Formato &gt; Converter em Texto Simples</em>).
+    Se algum arquivo vier como <code>.txt</code>, apenas abra, <strong>copie o conteúdo</strong> e siga os passos acima.
+    Evite Word/Google Docs para não alterar aspas e formatação.
+  </li>
+</ol>
+      <h3>3. Permissões (primeira execução)</h3>
+      <ol>
+        <li>No editor, selecione a função <code>semearLogoUmaVez</code>.</li>
+        <li>Clique em Executar (▶).</li>
+        <li>Na primeira execução, autorize as permissões: Revisar permissões → escolha a conta → Avançado → Ir para (não seguro) → Permitir.</li>
+      </ol>
+
+      <h3>4. Publicar como Aplicação Web</h3>
+      <ol>
+        <li>Implantar → Nova implantação → Tipo: Aplicação da Web.</li>
+        <li><strong>Executar como:</strong> Eu (sua conta).</li>
+        <li><strong>Quem tem acesso:</strong> Qualquer pessoa.</li>
+        <li>Clique em Implantar e copie a URL gerada.</li>
+      </ol>
+
+      <div class="warning-box">
+        <strong>URL GERADA:</strong> <span class="url-placeholder">https://script.google.com/macros/s/[ID]/exec</span>
+      </div>
+
+      <!-- DOWNLOADS -->
+      <h2 id="downloads">ARQUIVOS PARA DOWNLOAD</h2>
+      <p>Arquivos prontos, em modo somente leitura. Clique para baixar:</p>
+      <p>
+        <a class="button-style" href="https://drive.google.com/uc?export=download&id=1Rr9gkbwmkmp-5sRHk19jQdr48ScNaHUT" target="_blank" rel="noopener noreferrer">Baixar Code.gs</a>
+        <a class="button-style" href="https://drive.google.com/uc?export=download&id=1Yp7yzmXnWADuWkkJjLxIdNjyVwEVDO0O" target="_blank" rel="noopener noreferrer">Baixar index.html</a>
+      </p>
+      <p>Dica: no Drive, os arquivos estão como “Leitor — Qualquer pessoa com o link”.</p>
+
+      <!-- APÊNDICE OPCIONAL -->
+      <h2 id="apendice-cores">APÊNDICE — PERSONALIZAÇÃO DE CORES
+        <span class="badge-opcional">Opcional — não alterar para produção</span>
+      </h2>
+      <p>Use apenas se houver solicitação da coordenação.</p>
+
+      <div class="code-block" id="snippet-branding">
+<pre><code>const DEFAULT_BRANDING = {
+  primary:   '#092040', // Azul escuro principal
+  secondary: '#00B7D7', // Azul claro secundário
+  accent:    '#ECC203', // Amarelo destaque
+  neutral:   '#EFF1F3', // Cinza claro
+  dark:      '#021738'  // Azul muito escuro
+};</code></pre>
+      </div>
+      <button class="copy-btn" onclick="copyFrom('#snippet-branding')">Copiar</button>
+
+      <!-- MANUTENÇÃO -->
+      <h2 id="manutencao">MANUTENÇÃO E SUPORTE</h2>
+      <h3>Funções administrativas (opcional)</h3>
+      <ul>
+        <li><code>aplicarLayoutEmTodas()</code> — atualiza visual de planilhas.</li>
+        <li><code>aplicarLogoEmTodas()</code> — aplica logo em massa.</li>
+        <li><code>hotfixResumoSemFormulaEmTodas()</code> — corrige cálculos antigos.</li>
+      </ul>
+
+      <!-- CHECKLIST -->
+      <h2 id="checklist">CHECKLIST FINAL</h2>
+      <div class="overview-box" style="background:linear-gradient(135deg,var(--azul-principal) 0%, var(--azul-secundaria) 100%)">
+        <h3>Para a Equipe (antes de entregar):</h3>
+        <ul>
+          <li>Implantação publicada e URL testada.</li>
+          <li>Planilha sendo criada no Drive.</li>
+          <li>Interface funcionando no celular.</li>
+          <li>Links de download (Code.gs / index.html) funcionando.</li>
+        </ul>
+        <h3>Para o Empreendedor (orientações):</h3>
+        <ul>
+          <li>Sempre usar a mesma conta Google.</li>
+          <li>Autorizar acesso ao Drive no primeiro uso.</li>
+          <li>Lançar movimentações na data correta.</li>
+          <li>Backup automático no Drive (já habilitado).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyFrom(selector){
+      const el = document.querySelector(selector + ' code');
+      if(!el) return;
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        const btn = document.activeElement;
+        if(btn){ const old = btn.innerText; btn.innerText='Copiado!'; setTimeout(()=>btn.innerText=old,1500); }
+      });
+    }
+    function setActiveTab(a){
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      a.classList.add('active');
+    }
+<script>
+  // ... suas funções já existentes ...
+
+  (function(){
+    const d = new Date();
+    const y = document.getElementById('current-year');
+    if (y) y.textContent = d.getFullYear();
+    const lu = document.getElementById('last-updated');
+    if (lu) lu.textContent = d.toLocaleDateString('pt-BR');
+  })();
+</script>
+
+<footer class="footer" role="contentinfo" aria-label="Rodapé">
+  <div class="footer-inner">
+    <div>
+      <h4>Prospera Rio</h4>
+      <p>Sistema de Fluxo de Caixa — material de apoio para empreendedores.</p>
+      <p class="footer-meta">Versão do tutorial: v1.0 · Atualizado em <span id="last-updated">16/09/2025</span></p>
+    </div>
+
+    <div>
+      <h4>Ajuda</h4>
+      <ul>
+        <li><a href="#guia-uso">Guia de Uso</a></li>
+        <li><a href="#guia-tecnico">Guia Técnico</a></li>
+        <li><a href="#downloads">Downloads</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="mailto:planodevooconsultoria@gmail.com">planodevooconsultoria@gmail.com</a></li>
+        <li><a href="https://drive.google.com/drive/folders/1Z-NWK5tqy3CitGfF10AU69Q6LdcSOzD-" target="_blank" rel="noopener">Pasta no Drive</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-inner footer-meta" style="grid-template-columns:1fr;">
+    <p>&copy; <span id="current-year">2025</span> Prospera Rio. Todos os direitos reservados.</p>
+  </div>
+</footer>
+  </script>
+</body>
+</html>
